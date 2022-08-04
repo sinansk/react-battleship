@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import gameReducer from "./gameRedux";
+import usersReducer from "./gameRedux";
 
 import {
   persistStore,
@@ -20,17 +20,17 @@ const persistConfig = {
 };
 
 const combinedReducer = combineReducers({
-  user: gameReducer,
+  users: usersReducer,
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === "user/reset") {
+  if (action.type === "users/reset") {
     state = undefined;
   }
   return combinedReducer(state, action);
 };
 
-// const rootReducer = combineReducers({ user: userReducer });
+// const rootReducer = combineReducers({ users: usersReducer });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -2,7 +2,15 @@ import NameComponent from "../components/NameComponent";
 import StepButton from "../components/StepButton";
 import PlacingComponent from "../components/PlacingComponent";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increaseGameStep, decreaseGameStep } from "../redux/gameRedux";
 const Home = () => {
+  const player1 = useSelector((state) => state.users.playerOne);
+  const player2 = useSelector((state) => state.users.playerTwo);
+  const gameStep = useSelector((state) => state.users.gameStep);
+
+  const dispatch = useDispatch();
+
   const [startingStep, setStartingStep] = useState(0);
   //setting page steps for rendering users special components and setting activeUser //
 
@@ -33,16 +41,17 @@ const Home = () => {
     console.log(activeUser);
   }, [activeUser]);
 
+  useEffect(() => {
+    console.log(gameStep);
+  }, [gameStep]);
+
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
       {startingStep === 0 && <NameComponent />}
       {startingStep === 1 && <PlacingComponent />}
       <div className="flex gap-2" onClick={handleStep}>
         {startingStep > 0 && <StepButton name="back" />}
-        <StepButton
-          name={startingStep === 2 ? `play` : `next`}
-          onClick={handleStep}
-        />
+        <StepButton name={startingStep === 2 ? `play` : `next`} />
       </div>
     </div>
   );
