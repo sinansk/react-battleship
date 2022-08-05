@@ -14,7 +14,7 @@ const PlacingPagePlayerOne = () => {
       </h2>
       <div className="flex flex-col sm:flex-row ">
         <AvailableShipsComponent />
-        <PlacingComponent playerName={player1Name} />
+        <PlacingComponent playerName={player1Name} player="player1" />
       </div>
       <div className="flex gap-2">
         <NavLink to="/">

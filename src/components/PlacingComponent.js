@@ -6,11 +6,11 @@ import {
   setFilledAreas,
   filledAreas,
 } from "../redux/gameRedux";
-const PlacingComponent = ({ opponentFires }) => {
+const PlacingComponent = ({ opponentFires, playerName }) => {
   const coordsX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
   const coordsY = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   const dispatch = useDispatch();
-
+  console.log("opponentFires", opponentFires);
   const filledAreas = useSelector((state) => state.users.filledAreas);
 
   // const [filledAreas, setFilledAreas] = useState([]);
@@ -59,7 +59,11 @@ const PlacingComponent = ({ opponentFires }) => {
                 // isFilled={false} //turn true when user place ships on cells//
                 data-coord={coordX + coordY}
                 onClick={(e) => handleFilledAreas(e)}
-              ></div>
+              >
+                {opponentFires?.includes(coordX + coordY) && (
+                  <div className="cursor-pointer hover:bg-primary border-[0.5px] bg-slate-800 w-10 h-10"></div>
+                )}
+              </div>
             ))}
           </div>
         ))}

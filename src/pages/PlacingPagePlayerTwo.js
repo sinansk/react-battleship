@@ -21,6 +21,7 @@ const PlacingPagePlayerTwo = () => {
         <PlacingComponent
           playerName={player2Name}
           opponentFires={player1Fires}
+          player="player2"
         />
       </div>
       <div className="flex gap-2">
