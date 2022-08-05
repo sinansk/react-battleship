@@ -6,13 +6,29 @@ export const gameSlice = createSlice({
     playerOne: {
       isReady: null,
       name: "",
+      placedShipsCoords: [],
+      sunkedShipsCoords: [],
+      fires: {
+        missedFires: [],
+        successFires: [],
+        successSinks: [],
+      },
     },
     playerTwo: {
       isReady: null,
       name: "",
+      placedShipsCoords: [],
+      sunkedShipsCoords: [],
+      fires: {
+        missedFires: [],
+        successFires: [],
+        successSinks: [],
+      },
     },
     gameStarted: false,
-    gameStep: 10,
+    gameStep: 0,
+    selectedShip: "",
+    filledAreas: [],
   },
 
   reducers: {
@@ -26,7 +42,22 @@ export const gameSlice = createSlice({
       state.gameStep += 1;
     },
     decreaseGameStep: (state) => {
-      state.gameStep -= 1;
+      if (state.gameStep > 0) {
+        state.gameStep -= 1;
+      }
+    },
+    setSelectedShip: (state, action) => {
+      state.selectedShip = action.payload;
+    },
+    setFilledAreas: (state, action) => {
+      const itemIndex = state.filledAreas?.findIndex(
+        (filledArea) => filledArea === action.payload
+      );
+      console.log(itemIndex);
+      if (itemIndex === -1) {
+        state.filledAreas?.push(action.payload);
+        state.playerOne.fires?.missedFires.push(action.payload);
+      } else return;
     },
   },
 });
@@ -36,6 +67,8 @@ export const {
   setPlayerTwoName,
   increaseGameStep,
   decreaseGameStep,
+  setSelectedShip,
+  setFilledAreas,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

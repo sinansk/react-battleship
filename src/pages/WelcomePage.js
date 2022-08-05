@@ -1,6 +1,5 @@
 import NameComponent from "../components/NameComponent";
 import StepButton from "../components/StepButton";
-import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 const WelcomePage = () => {

@@ -1,5 +1,3 @@
-import React from "react";
-
 const StepButton = ({ name }) => {
   return (
     <div className="mt-3">

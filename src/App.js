@@ -3,6 +3,7 @@ import PlacingPagePlayerOne from "./pages/PlacingPagePlayerOne";
 import PlacingPagePlayerTwo from "./pages/PlacingPagePlayerTwo";
 import GamePage from "./pages/GamePage";
 import WelcomePage from "./pages/WelcomePage";
+import EndPage from "./pages/EndPage";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/player-1" element={<PlacingPagePlayerOne />} />
           <Route path="/player-2" element={<PlacingPagePlayerTwo />} />
           <Route path="/game" element={<GamePage />} />
+          <Route path="/end" element={<EndPage />} />
         </Routes>
       </Router>
     </div>
