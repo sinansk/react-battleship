@@ -5,16 +5,16 @@ import StepButton from "../components/StepButton";
 import AvailableShipsComponent from "../components/AvailableShipsComponent";
 
 const PlacingPagePlayerOne = () => {
-  const player1Name = useSelector((state) => state.users.playerOne.name);
+  const playerOneName = useSelector((state) => state.users.playerOne.name);
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
       <h2 className="mb-10 text-2xl font-bold">
-        {player1Name.toUpperCase()}, PLACE YOUR SHIPS
+        {playerOneName}, PLACE YOUR SHIPS
       </h2>
       <div className="flex flex-col sm:flex-row ">
         <AvailableShipsComponent />
-        <PlacingComponent playerName={player1Name} player="player1" />
+        <PlacingComponent playerName={playerOneName} player="playerOne" />
       </div>
       <div className="flex gap-2">
         <NavLink to="/">

@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux/";
 
 import { setPlayerTwoName, setPlayerOneName } from "../redux/gameRedux";
 const NameComponent = () => {
-  const [playerOne, setPlayerOne] = useState("");
-  const [playerTwo, setPlayerTwo] = useState("");
   const dispatch = useDispatch();
   const player1Name = useSelector((state) => state.users.playerOne.name);
   const player2Name = useSelector((state) => state.users.playerTwo.name);
-  // const handleNames = (e) => {
-  //   e.preventDefault();
-  //   dispatch(e.target.value);
-  // };
 
   return (
     <>
@@ -25,7 +18,9 @@ const NameComponent = () => {
             value={player1Name ? player1Name : ""}
             id="player1"
             placeholder="John Doe"
-            onChange={(e) => dispatch(setPlayerOneName(e.target.value))}
+            onChange={(e) =>
+              dispatch(setPlayerOneName(e.target.value.toUpperCase()))
+            }
           ></input>
         </div>
         <div className="flex flex-col m-10">
@@ -35,7 +30,9 @@ const NameComponent = () => {
             value={player2Name ? player2Name : ""}
             id="player2"
             placeholder="Don Joe"
-            onChange={(e) => dispatch(setPlayerTwoName(e.target.value))}
+            onChange={(e) =>
+              dispatch(setPlayerTwoName(e.target.value.toUpperCase()))
+            }
           ></input>
         </div>
       </div>
