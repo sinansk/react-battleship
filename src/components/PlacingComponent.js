@@ -45,6 +45,7 @@ const PlacingComponent = ({ player }) => {
   //   dispatch(setSelectedShipLength(e.target.dataset.length));
   // };
   const handleDrag = (e) => {
+    setIsDropped(false);
     dispatch(setIsShipSelected(true));
     dispatch(setSelectedShipLength(e.target.dataset.length));
     console.log(
@@ -78,7 +79,7 @@ const PlacingComponent = ({ player }) => {
   const [notDraggableArea, setNotDraggableArea] = useState(false);
   const [isDragStart, setIsDragStart] = useState(false);
   const isShipSelected = useSelector((state) => state.users.isShipSelected);
-  console.log(isShipSelected);
+  // console.log(isShipSelected);
   const handleFilledAreas = (e) => {
     let area = e.target.dataset.coord;
     console.log(area);
@@ -112,7 +113,7 @@ const PlacingComponent = ({ player }) => {
   //   console.log("onDropCapture", area);
   // };
   const [isMouseUp, setIsMouseUp] = useState(false);
-  const [shipStart, setShipStart] = useState([]);
+  const [shipCoord, setShipCoord] = useState();
   const shipDirection = "X";
   const handleMouseUp = () => {
     setIsMouseUp(true);
@@ -148,17 +149,24 @@ const PlacingComponent = ({ player }) => {
     //   dispatch(placePlayerOneShips(shipPoints));
     // }
 
-    setShipStart(shipPoints);
+    setShipCoord(shipPoints);
   };
 
+  const [isDropped, setIsDropped] = useState(false);
   useEffect(() => {
     console.log("isMouseUp", isMouseUp);
   }, [isMouseUp]);
   const handleMouseUpPoint = (e) => {
     let point = e.target.dataset.coord;
+    setIsDropped(true);
     console.log("mouseUpPoint", point);
   };
 
+  const handleDragEnd = () => {
+    setShipCoord(shipPoints);
+    console.log("handleDragEnd", shipPoints);
+    dispatch(placePlayerOneShips(shipPoints));
+  };
   // const notDraggable = (e) => {
   //   let area = e.target.dataset.coord;
   //   if (activePlayerShips?.includes(area)) {
@@ -167,8 +175,8 @@ const PlacingComponent = ({ player }) => {
   //   }
   // };
   useEffect(() => {
-    console.log("onDragPoint", shipStart);
-  }, [shipStart]);
+    console.log("onDragPoint", shipCoord);
+  }, [shipCoord]);
   return (
     <div className="grid grid-cols-2">
       <div className="flex flex-row items-center h-48 gap-2 mr-10 justify-evenly sm:flex-row w-96 bg-primary">
@@ -177,7 +185,8 @@ const PlacingComponent = ({ player }) => {
             onDragStart={(e) => handleDrag(e)}
             onMouseDown={(e) => setIsMouseUp(false)}
             onMouseUp={handleMouseUp}
-            onDragEnd={() => dispatch(setIsShipSelected(false))}
+            onDragEnd={handleDragEnd}
+            // onDragEnd={() => dispatch(setIsShipSelected(false))}
             // onClick={(e) => handleShip(e)}
             key={ship.name}
             data-length={ship.length}
@@ -216,10 +225,10 @@ const PlacingComponent = ({ player }) => {
                 onClick={(e) => handleFilledAreas(e)}
                 draggable
                 // onDragEnter={handleDragEnterPoint}
-                // onDragLeave={handleDragLeavePoint}
+                onDragLeave={handleDragOverPoint}
                 // onDragExit={handleDragExitPoint}
                 // onDragStart={handleDragStartPoint}
-                onDragOver={handleDragOverPoint}
+                // onDragOver={handleDragOverPoint}
                 // onMouseUp={handleMouseUp}
               >
                 {activePlayerShips?.includes(coordX[1] + coordY) && (
