@@ -6,7 +6,11 @@ export const gameSlice = createSlice({
     playerOne: {
       isReady: null,
       name: "",
-      placedShipsCoords: [],
+      placedShipsCoords: [
+        ["11", "12", "13", "14"],
+        ["34", "44", "54"],
+      ],
+
       sunkedShipsCoords: [],
       fires: {
         allFires: [],
@@ -31,7 +35,8 @@ export const gameSlice = createSlice({
     activePlayerName: "",
     gameStarted: false,
     gameStep: 0,
-    selectedShip: "",
+    selectedShipLength: "",
+    isShipSelected: false,
   },
 
   reducers: {
@@ -49,14 +54,15 @@ export const gameSlice = createSlice({
         state.gameStep -= 1;
       }
     },
-    setSelectedShip: (state, action) => {
-      state.selectedShip = action.payload;
+    setSelectedShipLength: (state, action) => {
+      state.selectedShipLength = action.payload;
     },
 
     placePlayerOneShips: (state, action) => {
       const itemIndex = state.playerOne?.placedShipsCoords.findIndex(
         (placedShipsCoord) => placedShipsCoord === action.payload
       );
+
       console.log(itemIndex);
       if (itemIndex === -1) {
         state.playerOne?.placedShipsCoords?.push(action.payload);
@@ -98,17 +104,25 @@ export const gameSlice = createSlice({
         state.playerTwo.fires?.allFires.push(action.payload);
         if (state.playerOne.placedShipsCoords?.includes(action.payload)) {
           state.playerTwo.fires?.successFires.push(action.payload);
-          state.activePlayerName = state.playerTwo.name;
           state.activePlayer = "playerTwo";
         } else {
           state.playerTwo.fires?.missedFires.push(action.payload);
-          state.activePlayerName = state.playerOne.name;
           state.activePlayer = "playerOne";
         }
       } else return;
     },
     setActivePlayer: (state, action) => {
       state.activePlayer = action.payload;
+    },
+    setActivePlayerName: (state) => {
+      if (state.activePlayer === "playerOne") {
+        state.activePlayerName = state.playerOne.name;
+      } else if (state.activePlayer === "playerTwo") {
+        state.activePlayerName = state.playerTwo.name;
+      }
+    },
+    setIsShipSelected: (state, action) => {
+      state.isShipSelected = action.payload;
     },
   },
 });
@@ -118,13 +132,15 @@ export const {
   setPlayerTwoName,
   increaseGameStep,
   decreaseGameStep,
-  setSelectedShip,
+  setSelectedShipLength,
   setFilledAreas,
   placePlayerOneShips,
   placePlayerTwoShips,
   playerOneFires,
   playerTwoFires,
   setActivePlayer,
+  setActivePlayerName,
+  setIsShipSelected,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

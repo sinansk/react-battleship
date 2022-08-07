@@ -12,10 +12,7 @@ const PlacingPagePlayerOne = () => {
       <h2 className="mb-10 text-2xl font-bold">
         {playerOneName}, PLACE YOUR SHIPS
       </h2>
-      <div className="flex flex-col sm:flex-row ">
-        <AvailableShipsComponent />
-        <PlacingComponent playerName={playerOneName} player="playerOne" />
-      </div>
+      <PlacingComponent playerName={playerOneName} player="playerOne" />
       <div className="flex gap-2">
         <NavLink to="/">
           <StepButton name="back" />
