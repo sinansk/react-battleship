@@ -6,9 +6,33 @@ export const gameSlice = createSlice({
     playerOne: {
       isReady: null,
       name: "",
-      placedShipsCoords: [
-        ["11", "12", "13", "14"],
-        ["34", "44", "54"],
+      placedShipsCoords: [],
+      emptySpaces: [
+        "29",
+        "39",
+        "49",
+        "51",
+        "61",
+        "71",
+        "81",
+        "91",
+        "72",
+        "82",
+        "92",
+        "77",
+        "78",
+        "79",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "95",
+        "96",
+        "97",
+        "98",
+        "99",
       ],
 
       sunkedShipsCoords: [],
@@ -35,8 +59,6 @@ export const gameSlice = createSlice({
     activePlayerName: "",
     gameStarted: false,
     gameStep: 0,
-    selectedShipLength: "",
-    isShipSelected: false,
   },
 
   reducers: {
@@ -54,26 +76,25 @@ export const gameSlice = createSlice({
         state.gameStep -= 1;
       }
     },
-    setSelectedShipLength: (state, action) => {
-      state.selectedShipLength = action.payload;
-    },
 
     placePlayerOneShips: (state, action) => {
-      const itemIndex = state.playerOne?.placedShipsCoords.findIndex(
-        (placedShipsCoord) => placedShipsCoord === action.payload
-      );
-
-      console.log(itemIndex);
-      if (itemIndex === -1) {
+      // const itemIndex = state.playerOne?.placedShipsCoords.findIndex(
+      //   (placedShipsCoord) => placedShipsCoord === action.payload
+      // );
+      const flatten = state.playerOne.placedShipsCoords?.flat();
+      console.log("flatten", flatten);
+      const isPlaced = flatten.some((item) => action.payload.includes(item));
+      console.log("isPlaced", isPlaced);
+      if (isPlaced === false) {
         state.playerOne?.placedShipsCoords?.push(action.payload);
       } else return;
     },
     placePlayerTwoShips: (state, action) => {
-      const itemIndex = state.playerTwo?.placedShipsCoords.findIndex(
-        (placedShipsCoord) => placedShipsCoord === action.payload
-      );
-      console.log(itemIndex);
-      if (itemIndex === -1) {
+      const flatten = state.playerTwo.placedShipsCoords?.flat();
+      console.log("flatten", flatten);
+      const isPlaced = flatten.some((item) => action.payload.includes(item));
+      console.log("isPlaced", isPlaced);
+      if (isPlaced === false) {
         state.playerTwo?.placedShipsCoords?.push(action.payload);
       } else return;
     },
@@ -121,9 +142,6 @@ export const gameSlice = createSlice({
         state.activePlayerName = state.playerTwo.name;
       }
     },
-    setIsShipSelected: (state, action) => {
-      state.isShipSelected = action.payload;
-    },
   },
 });
 
@@ -132,7 +150,6 @@ export const {
   setPlayerTwoName,
   increaseGameStep,
   decreaseGameStep,
-  setSelectedShipLength,
   setFilledAreas,
   placePlayerOneShips,
   placePlayerTwoShips,
@@ -140,7 +157,6 @@ export const {
   playerTwoFires,
   setActivePlayer,
   setActivePlayerName,
-  setIsShipSelected,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
