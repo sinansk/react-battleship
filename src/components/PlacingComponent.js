@@ -133,7 +133,11 @@ const PlacingComponent = ({ player }) => {
       shipCoord.every((element) => element < 99) &&
       shipCoord.every((element) => element !== `010`)
     ) {
-      dispatch(placePlayerOneShips(shipCoord));
+      if (player === "playerOne") {
+        dispatch(placePlayerOneShips(shipCoord));
+      } else if (player === "playerTwo") {
+        dispatch(placePlayerTwoShips(shipCoord));
+      }
     }
   };
   const isPlaceAble = () => {

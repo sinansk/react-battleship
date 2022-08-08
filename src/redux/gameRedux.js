@@ -105,7 +105,9 @@ export const gameSlice = createSlice({
       console.log(itemIndex);
       if (itemIndex === -1) {
         state.playerOne.fires?.allFires.push(action.payload);
-        if (state.playerTwo.placedShipsCoords?.includes(action.payload)) {
+        if (
+          state.playerTwo.placedShipsCoords?.flat().includes(action.payload)
+        ) {
           state.playerOne.fires?.successFires.push(action.payload);
           state.activePlayerName = state.playerOne.name;
           state.activePlayer = "playerOne";
@@ -123,7 +125,9 @@ export const gameSlice = createSlice({
       console.log(itemIndex);
       if (itemIndex === -1) {
         state.playerTwo.fires?.allFires.push(action.payload);
-        if (state.playerOne.placedShipsCoords?.includes(action.payload)) {
+        if (
+          state.playerOne.placedShipsCoords?.flat().includes(action.payload)
+        ) {
           state.playerTwo.fires?.successFires.push(action.payload);
           state.activePlayer = "playerTwo";
         } else {
