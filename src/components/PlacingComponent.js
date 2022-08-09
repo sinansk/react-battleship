@@ -13,35 +13,35 @@ const PlacingComponent = ({ player }) => {
       name: "carrier",
       length: "5",
       placed: false,
-      height: 48,
+      height: "200px",
       width: "20px",
     },
     {
       name: "battleship",
       length: "4",
       placed: false,
-      height: "80px",
+      height: "160px",
       width: "20px",
     },
     {
       name: "cruiser",
       length: "3",
       placed: true,
-      height: "60px",
+      height: "120px",
       width: "20px",
     },
     {
       name: "submarine",
       length: "3",
       placed: false,
-      height: "60px",
+      height: `120px`,
       width: "20px",
     },
     {
       name: "destroyer",
       length: "2",
       placed: false,
-      height: "40px",
+      height: "80px",
       width: "20px",
     },
   ];
@@ -136,10 +136,6 @@ const PlacingComponent = ({ player }) => {
         }
       }
 
-      // if (!activePlayerShips.includes(shipPoints)) {
-      //   dispatch(placePlayerOneShips(shipPoints));
-      // }
-
       setShipCoord(shipPoints);
     }
   };
@@ -154,15 +150,9 @@ const PlacingComponent = ({ player }) => {
       shipCoord.every((element) => element <= 99) &&
       shipCoord.every((element) => element !== `010`)
     ) {
-      // if (player === "playerOne") {
-      //   dispatch(placePlayerOneShips(shipCoord));
-      // } else if (player === "playerTwo") {
-      //   dispatch(placePlayerTwoShips(shipCoord));
-      // }
       dispatch(placeShip({ player, shipCoord }));
     }
     setIsShipSelected(false);
-    handleClick();
   };
 
   const [shipDirection, setShipDirection] = useState("X");
@@ -182,30 +172,6 @@ const PlacingComponent = ({ player }) => {
     dispatch(resetShipPosition(player));
   };
 
-  const ref = useRef(null);
-
-  // useEffect(() => {
-  //   console.log("className 👉️", ref.current.className);
-
-  //   // 👇️ check if element contains class
-  //   if (ref.current.classList.contains("ship")) {
-  //     console.log("Element contains class");
-  //   } else {
-  //     console.log("Element does NOT contain class");
-  //   }
-  // }, []);
-
-  const handleClick = () => {
-    // console.log("className 👉️", event.currentTarget.className);
-
-    // 👇️ check if element contains class
-    if (document.querySelector(`selected`)) {
-      console.log("Element contains class");
-    } else {
-      console.log("Element does NOT contain class");
-    }
-  };
-
   return (
     <div className="grid grid-cols-2">
       <div className="flex flex-col items-center mr-10">
@@ -214,63 +180,19 @@ const PlacingComponent = ({ player }) => {
             shipDirection === `X` && `grid grid-rows-5 gap-1`
           } flex flex-row items-center h-60 gap-2  bg-blue-300 border-[1px] rounded-sm justify-evenly w-96`}
         >
-          {/* {availableShips.map((ship) => ( */}
-          <div
-            ref={ref}
-            onClick={(e) => handleShip(e)}
-            onDrag={(e) => handleShip(e)}
-            data-length="5"
-            name="carrier"
-            draggable
-            className={`${
-              shipDirection === `X` && `rotate-90`
-            }  ship cursor-pointer w-10 h-48 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
-          ></div>
-          <div
-            ref={ref}
-            onClick={(e) => handleShip(e)}
-            onDrag={(e) => handleShip(e)}
-            data-length="4"
-            name="battleship"
-            draggable
-            className={`${
-              shipDirection === `X` && `rotate-90`
-            } ship cursor-pointer w-10 h-40 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
-          ></div>
-          <div
-            ref={ref}
-            onClick={(e) => handleShip(e)}
-            onDrag={(e) => handleShip(e)}
-            data-length="3"
-            name="cruiser"
-            draggable
-            className={`${
-              shipDirection === `X` && `rotate-90`
-            } ship cursor-pointer w-10 h-32 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
-          ></div>
-          <div
-            ref={ref}
-            onClick={(e) => handleShip(e)}
-            onDrag={(e) => handleShip(e)}
-            data-length="3"
-            name="cruiser"
-            draggable
-            className={`${
-              shipDirection === `X` && `rotate-90`
-            } ship cursor-pointer w-10 h-32 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
-          ></div>
-          <div
-            ref={ref}
-            onClick={(e) => handleShip(e)}
-            onDrag={(e) => handleShip(e)}
-            data-length="2"
-            name="destroyer"
-            draggable
-            className={`${
-              shipDirection === `X` && `rotate-90`
-            } ship cursor-pointer w-10 h-20 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
-          ></div>
-          {/* ))} */}
+          {availableShips?.map((ship, i) => (
+            <div
+              onClick={(e) => handleShip(e)}
+              onDrag={(e) => handleShip(e)}
+              key={i}
+              data-length={ship.length}
+              name={ship.length}
+              style={{ height: `${ship.height}` }}
+              className={`${
+                shipDirection === `X` && `rotate-90`
+              }  ship cursor-pointer w-10  border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
+            ></div>
+          ))}
         </div>
         <div className="flex items-center justify-center gap-2 mt-5">
           <button
