@@ -1,13 +1,19 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { playerOneFires, playerTwoFires } from "../redux/gameRedux";
+import {
+  playerOneFires,
+  playerTwoFires,
+  checkWinner,
+} from "../redux/gameRedux";
 
-const GameComponent = ({ player }) => {
+const GameComponent = ({ player, opponent }) => {
   const coordsX = ["A0", "B1", "C2", "D3", "E4", "F5", "G6", "H7", "I8", "J9"];
   const coordsY = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   const dispatch = useDispatch();
 
   const activePlayer = useSelector((state) => state.users[player]);
   const activePlayerFires = activePlayer.fires;
+  console.log(activePlayerFires);
   const handleFire = (e) => {
     let area = e.target.dataset.coord;
     console.log(area);
@@ -16,15 +22,23 @@ const GameComponent = ({ player }) => {
     } else if (player === "playerTwo") {
       dispatch(playerTwoFires(area));
     }
+    dispatch(checkWinner({ player, opponent }));
   };
   console.log(player);
+
+  const winner = useSelector((state) => state.users.winner);
+
+  useEffect(() => {
+    console.log("winner", winner);
+  }, [winner]);
+
   return (
     <>
       {/* Creating grid cells with XY coordinates  */}
       <div
         className={`${
-          player === `playerTwo` && `bg-lime-300`
-        } relative grid grid-cols-10 text-sm bg-blue-300`}
+          player === `playerTwo` ? `bg-teal-300` : `bg-blue-300`
+        } relative grid grid-cols-10 text-sm `}
       >
         <div className="absolute right-0 grid grid-cols-10 text-center -top-6 ">
           {coordsY.map((item) => (

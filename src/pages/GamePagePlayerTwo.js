@@ -5,7 +5,7 @@ const GamePagePlayerTwo = () => {
   const activePlayer = useSelector((state) => state.users.activePlayer);
   console.log(activePlayer);
   const activePlayerName = useSelector(
-    (state) => state.users[activePlayer].name
+    (state) => state.users[activePlayer]?.name
   );
 
   return (

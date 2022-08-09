@@ -7,34 +7,6 @@ export const gameSlice = createSlice({
       isReady: null,
       name: "",
       placedShipsCoords: [],
-      emptySpaces: [
-        "29",
-        "39",
-        "49",
-        "51",
-        "61",
-        "71",
-        "81",
-        "91",
-        "72",
-        "82",
-        "92",
-        "77",
-        "78",
-        "79",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "95",
-        "96",
-        "97",
-        "98",
-        "99",
-      ],
-
       sunkedShipsCoords: [],
       fires: {
         allFires: [],
@@ -57,6 +29,7 @@ export const gameSlice = createSlice({
     },
     activePlayer: "playerOne",
     activePlayerName: "",
+    winner: "",
     gameStarted: false,
     gameStep: 0,
   },
@@ -82,27 +55,24 @@ export const gameSlice = createSlice({
       }
     },
 
-    placePlayerOneShips: (state, action) => {
-      // const itemIndex = state.playerOne?.placedShipsCoords.findIndex(
-      //   (placedShipsCoord) => placedShipsCoord === action.payload
-      // );
-      const flatten = state.playerOne.placedShipsCoords?.flat();
-      console.log("flatten", flatten);
-      const isPlaced = flatten.some((item) => action.payload.includes(item));
-      console.log("isPlaced", isPlaced);
+    placeShip: (state, action) => {
+      let player = action.payload.player;
+
+      const flatten = state[player].placedShipsCoords?.flat();
+
+      const isPlaced = flatten.some((item) =>
+        action.payload.shipCoord.includes(item)
+      );
+
       if (isPlaced === false) {
-        state.playerOne?.placedShipsCoords?.push(action.payload);
+        state[player]?.placedShipsCoords?.push(action.payload.shipCoord);
       } else return;
     },
-    placePlayerTwoShips: (state, action) => {
-      const flatten = state.playerTwo.placedShipsCoords?.flat();
-      console.log("flatten", flatten);
-      const isPlaced = flatten.some((item) => action.payload.includes(item));
-      console.log("isPlaced", isPlaced);
-      if (isPlaced === false) {
-        state.playerTwo?.placedShipsCoords?.push(action.payload);
-      } else return;
+    resetShipPosition: (state, action) => {
+      let player = action.payload;
+      state[player].placedShipsCoords = [];
     },
+
     playerOneFires: (state, action) => {
       const itemIndex = state.playerOne.fires?.allFires?.findIndex(
         (fire) => fire === action.payload
@@ -123,6 +93,7 @@ export const gameSlice = createSlice({
         }
       } else return;
     },
+
     playerTwoFires: (state, action) => {
       const itemIndex = state.playerTwo?.fires?.allFires?.findIndex(
         (fire) => fire === action.payload
@@ -151,6 +122,18 @@ export const gameSlice = createSlice({
         state.activePlayerName = state.playerTwo.name;
       }
     },
+    checkWinner: (state, action) => {
+      let player = action.payload.player;
+      let opponent = action.payload.opponent;
+
+      console.log("player", player, "opponent", opponent);
+      if (
+        state[player].fires.successFires.includes(
+          state[opponent].placedShipsCoords.flat()
+        )
+      ) {
+      }
+    },
   },
 });
 
@@ -166,6 +149,9 @@ export const {
   playerTwoFires,
   setActivePlayer,
   setActivePlayerName,
+  placeShip,
+  resetShipPosition,
+  checkWinner,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
