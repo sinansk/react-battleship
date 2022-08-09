@@ -17,11 +17,15 @@ const GameComponent = ({ player }) => {
       dispatch(playerTwoFires(area));
     }
   };
-
+  console.log(player);
   return (
     <>
       {/* Creating grid cells with XY coordinates  */}
-      <div className="relative grid grid-cols-10 text-sm ">
+      <div
+        className={`${
+          player === `playerTwo` && `bg-lime-300`
+        } relative grid grid-cols-10 text-sm bg-blue-300`}
+      >
         <div className="absolute right-0 grid grid-cols-10 text-center -top-6 ">
           {coordsY.map((item) => (
             <div key={item} className="w-10">
@@ -29,9 +33,9 @@ const GameComponent = ({ player }) => {
             </div>
           ))}
         </div>
-        <div className="absolute top-0 grid items-center text-right -left-4  grid-rows-10">
+        <div className="absolute top-0 grid items-center text-right -left-4 grid-rows-10">
           {coordsX.map((item) => (
-            <div key={item[0]} className="h-10 grid items-center">
+            <div key={item[0]} className="grid items-center h-10">
               {item[0]}
             </div>
           ))}
@@ -40,7 +44,7 @@ const GameComponent = ({ player }) => {
           <div coord={coordY} key={coordY} className="grid grid-rows-10">
             {coordsX.map((coordX) => (
               <div
-                className="cursor-crosshair hover:bg-primary border-[0.5px] bg-slate-100 w-10 h-10"
+                className={`cursor-crosshair hover:bg-${player}-hover border-[0.5px] bg-${player}-bg w-10 h-10`}
                 key={coordX[1] + coordY}
                 // isFilled={false} //turn true when user place ships on cells//
                 data-coord={coordX[1] + coordY}

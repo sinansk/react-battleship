@@ -8,8 +8,8 @@ const PlacingPagePlayerOne = () => {
   const playerOneName = useSelector((state) => state.users.playerOne.name);
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
-      <h2 className="mb-10 text-2xl font-bold">
+    <div className="flex flex-col items-center justify-center w-screen h-screen ">
+      <h2 className="mb-10 text-3xl font-bold animate-pulse">
         {playerOneName}, PLACE YOUR SHIPS
       </h2>
       <PlacingComponent playerName={playerOneName} player="playerOne" />

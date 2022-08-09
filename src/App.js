@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 const App = () => {
   const activePlayer = useSelector((state) => state.users.activePlayer);
   return (
-    <div className="App">
+    <div className="bg-center bg-no-repeat bg-cover bg-sea-bg-image">
       <Router>
         <Routes>
           <Route path="/" element={<WelcomePage />} />

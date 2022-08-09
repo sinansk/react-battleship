@@ -2,10 +2,16 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    daisyui: {
-      themes: ["aqua", "dark"],
+    backgroundImage: {
+      "sea-bg-image": "url('../src/assets/sea-bg.jpg')",
     },
+    // colors: {
+    //   "playerOne-bg": "#67e8f9",
+    //   "playerOne-hover": "#bef264",
+    //   "playerTwo-bg": "#5eead4",
+    //   "playerTwo-hover": "#67e8f9",
+    // },
     extend: {},
   },
-  plugins: [require("daisyui")],
+  plugins: [],
 };

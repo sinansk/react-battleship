@@ -1,32 +1,43 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { placePlayerOneShips, placePlayerTwoShips } from "../redux/gameRedux";
+import PreviousMap from "postcss/lib/previous-map";
 const PlacingComponent = ({ player }) => {
   const ships = [
     {
       name: "carrier",
-      length: 5,
+      length: "5",
       placed: false,
+      height: 48,
+      width: "20px",
     },
     {
       name: "battleship",
-      length: 4,
+      length: "4",
       placed: false,
+      height: "80px",
+      width: "20px",
     },
     {
       name: "cruiser",
-      length: 3,
-      placed: false,
+      length: "3",
+      placed: true,
+      height: "60px",
+      width: "20px",
     },
     {
       name: "submarine",
-      length: 3,
+      length: "3",
       placed: false,
+      height: "60px",
+      width: "20px",
     },
     {
       name: "destroyer",
-      length: 2,
+      length: "2",
       placed: false,
+      height: "40px",
+      width: "20px",
     },
   ];
   const dispatch = useDispatch();
@@ -37,6 +48,10 @@ const PlacingComponent = ({ player }) => {
     setIsShipSelected(true);
     setSelectedShipLength(e.target.dataset.length);
   };
+
+  useEffect(() => {
+    console.log(availableShips);
+  }, [availableShips]);
   // const handleDrag = (e) => {
   //   setIsDropped(false);
   //   dispatch(setIsShipSelected(true));
@@ -78,8 +93,8 @@ const PlacingComponent = ({ player }) => {
     }
   };
 
-  const [shipCoord, setShipCoord] = useState();
-  const shipDirection = "Y";
+  const [shipCoord, setShipCoord] = useState([]);
+  // const shipDirection = "Y";
 
   let shipStartPoint;
 
@@ -87,6 +102,7 @@ const PlacingComponent = ({ player }) => {
   const handleDragOverPoint = (e) => {
     if (isShipSelected) {
       shipStartPoint = e.target.dataset.coord;
+      console.log(shipStartPoint);
 
       // if ship direction is X axis///
       let pointTwo = Number(shipStartPoint[1]);
@@ -127,7 +143,6 @@ const PlacingComponent = ({ player }) => {
   }, [shipCoord]);
 
   const placeShips = () => {
-    isPlaceAble();
     if (
       ///CHECK IF ANY SHIP COORD OUT OF THE BOARD, TO SEND COORD TO REDUX////
       shipCoord.every((element) => element < 99) &&
@@ -139,25 +154,95 @@ const PlacingComponent = ({ player }) => {
         dispatch(placePlayerTwoShips(shipCoord));
       }
     }
-  };
-  const isPlaceAble = () => {
-    shipCoord.every((item) => emptySpaces.includes(item));
+    setIsShipSelected(false);
   };
 
-  const emptySpaces = useSelector((state) => state.users.playerOne.emptySpaces);
+  const [shipDirection, setShipDirection] = useState("X");
+
+  const handleShipDirection = (e) => {
+    if (shipDirection === "X") {
+      setShipDirection("Y");
+    } else {
+      setShipDirection("X");
+    }
+  };
+
+  useEffect(() => {
+    console.log(shipDirection);
+  }, [shipDirection]);
+
   return (
     <div className="grid grid-cols-2">
-      <div className="flex flex-row items-center h-48 gap-2 mr-10 justify-evenly sm:flex-row w-96 bg-primary">
-        {availableShips.map((ship) => (
+      <div className="flex flex-col items-center mr-10">
+        <div
+          className={`${
+            shipDirection === `X` && `grid grid-rows-5 gap-1`
+          } flex flex-row items-center h-60 gap-2  bg-blue-300 border-[1px] rounded-sm border-indigo-500 justify-evenly  w-96`}
+        >
+          {/* {availableShips.map((ship) => ( */}
           <div
             onClick={(e) => handleShip(e)}
-            key={ship.name}
-            data-length={ship.length}
-            name={ship.name}
+            data-length="5"
+            name="carrier"
+            isPlaced
             draggable
-            className="cursor-pointer w-10 h-40 grid grid-rows-3  bg-rose-200 hover:outline outline-green-500"
+            className={`${
+              shipDirection === `X` && `rotate-90`
+            } cursor-pointer w-10 h-48 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-green-500`}
           ></div>
-        ))}
+          <div
+            onClick={(e) => handleShip(e)}
+            data-length="4"
+            name="battleship"
+            isPlaced
+            draggable
+            className={`${
+              shipDirection === `X` && `rotate-90`
+            } cursor-pointer w-10 h-40 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-green-500`}
+          ></div>
+          <div
+            onClick={(e) => handleShip(e)}
+            data-length="3"
+            name="cruiser"
+            isPlaced
+            draggable
+            className={`${
+              shipDirection === `X` && `rotate-90`
+            } cursor-pointer w-10 h-32 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-green-500`}
+          ></div>
+          <div
+            onClick={(e) => handleShip(e)}
+            data-length="3"
+            name="cruiser"
+            isPlaced
+            draggable
+            className={`${
+              shipDirection === `X` && `rotate-90`
+            } cursor-pointer w-10 h-32 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-green-500`}
+          ></div>
+          <div
+            onClick={(e) => handleShip(e)}
+            data-length="2"
+            name="destroyer"
+            isPlaced
+            draggable
+            className={`${
+              shipDirection === `X` && `rotate-90`
+            } cursor-pointer w-10 h-20 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-green-500`}
+          ></div>
+          {/* ))} */}
+        </div>
+        <div className="flex items-center justify-center gap-2 mt-5">
+          <button
+            onClick={handleShipDirection}
+            className="items-center justify-center p-2 px-3 py-2 overflow-hidden text-sm transition duration-300 ease-out border-2 border-white rounded-full shadow-md hover:bg-slate-600 font-sm text-slate-100 bg-slate-700"
+          >
+            rotate
+          </button>
+          <button className="items-center justify-center p-2 px-3 py-2 overflow-hidden text-sm transition duration-300 ease-out border-2 border-white rounded-full shadow-md hover:bg-slate-600 font-sm text-slate-100 bg-slate-700">
+            reset
+          </button>
+        </div>
       </div>
 
       {/* Creating grid cells with XY coordinates  */}
@@ -169,9 +254,9 @@ const PlacingComponent = ({ player }) => {
             </div>
           ))}
         </div>
-        <div className="absolute top-0 grid items-center text-right -left-4  grid-rows-10">
+        <div className="absolute top-0 grid items-center text-right -left-4 grid-rows-10">
           {coordsX.map((item) => (
-            <div key={item[0]} className="h-10 grid items-center">
+            <div key={item[0]} className="grid items-center h-10">
               {item[0]}
             </div>
           ))}
@@ -182,25 +267,24 @@ const PlacingComponent = ({ player }) => {
               <div
                 className={`${
                   flatten?.includes(coordX[1] + coordY)
-                    ? `bg-slate-800`
+                    ? `bg-slate-700`
                     : `bg-blue-300`
                 } 
-                   cursor-pointer hover:bg-primary border-[0.5px]  w-10 h-10`}
+                     border-[0.5px]  w-10 h-10`}
                 key={coordX[1] + coordY}
                 data-coord={coordX[1] + coordY}
                 // onClick={(e) => handleFilledAreas(e)}
                 draggable
                 onMouseOver={handleDragOverPoint}
-                onDragOver={handleDragOverPoint}
               >
-                {shipCoord?.includes(coordX[1] + coordY) && (
+                {isShipSelected && shipCoord?.includes(coordX[1] + coordY) && (
                   <div
                     onClick={placeShips}
                     className={`${
                       shipCoord.some((item) => flatten.includes(item))
                         ? `bg-red-500`
                         : ` bg-green-500`
-                    }  w-10 h-10 border-[0.5px] text-center text-lg `}
+                    }  w-10 h-10 border-[0.5px] text-center text-lg cursor-pointer`}
                   ></div>
                 )}
                 {/* {flatten?.includes(coordX[1] + coordY) && (

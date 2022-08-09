@@ -68,6 +68,11 @@ export const gameSlice = createSlice({
     setPlayerTwoName: (state, action) => {
       state.playerTwo.name = action.payload;
     },
+    setGameStarted: (state) => {
+      if (state.playerOne.name !== "" && state.playerTwo.name !== "") {
+        state.gameStarted = true;
+      }
+    },
     increaseGameStep: (state) => {
       state.gameStep += 1;
     },

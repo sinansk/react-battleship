@@ -9,7 +9,7 @@ const PlacingPagePlayerTwo = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
-      <h2 className="mb-10 text-2xl font-bold">
+      <h2 className="mb-10 text-3xl font-bold animate-pulse">
         {playerTwoName}, PLACE YOUR SHIPS
       </h2>
       <PlacingComponent playerName={playerTwoName} player="playerTwo" />

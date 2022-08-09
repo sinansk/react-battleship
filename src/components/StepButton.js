@@ -1,18 +1,27 @@
 const StepButton = ({ name }) => {
   return (
     <div className="mt-3">
-      <button className="btn btn-primary" name={name}>
-        <span className="mr-3">{name}</span>
-        <svg
-          fill="white"
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          className={`${name === "back" ? `rotate-180` : ``} `}
-        >
-          <path d="M15 5.829l6.171 6.171-6.171 6.171v-3.171h-13v-6h13v-3.171zm-2-4.829v6h-13v10h13v6l11-11-11-11z" />
-        </svg>
+      <button className="relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium transition duration-300 ease-out border-2 border-white rounded-full shadow-md text-slate-100 bg-slate-700 group">
+        <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-slate-700 group-hover:translate-x-0 ease">
+          <svg
+            className={`${name === "back" && ` rotate-180`} w-6 h-6`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            ></path>
+          </svg>
+        </span>
+        <span className="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform group-hover:translate-x-full ease">
+          {name}
+        </span>
+        <span className="relative invisible">{name}</span>
       </button>
     </div>
   );
