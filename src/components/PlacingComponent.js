@@ -1,59 +1,85 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   placePlayerOneShips,
   placePlayerTwoShips,
   placeShip,
+  setWaitingShips,
   resetShipPosition,
 } from "../redux/gameRedux";
 
 const PlacingComponent = ({ player }) => {
-  const ships = [
-    {
-      name: "carrier",
-      length: "5",
-      placed: false,
-      height: "200px",
-      width: "20px",
-    },
-    {
-      name: "battleship",
-      length: "4",
-      placed: false,
-      height: "160px",
-      width: "20px",
-    },
-    {
-      name: "cruiser",
-      length: "3",
-      placed: true,
-      height: "120px",
-      width: "20px",
-    },
-    {
-      name: "submarine",
-      length: "3",
-      placed: false,
-      height: `120px`,
-      width: "20px",
-    },
-    {
-      name: "destroyer",
-      length: "2",
-      placed: false,
-      height: "80px",
-      width: "20px",
-    },
-  ];
+  // const ships = [
+  //   {
+  //     name: "carrier",
+  //     id: "0",
+  //     length: "5",
+  //     isPlaced: false,
+  //     height: "200px",
+  //     width: "20px",
+  //   },
+  //   {
+  //     name: "battleship",
+  //     id: "1",
+  //     length: "4",
+  //     isPlaced: false,
+  //     height: "160px",
+  //     width: "20px",
+  //   },
+  //   {
+  //     name: "cruiser",
+  //     id: "2",
+  //     length: "3",
+  //     isPlaced: false,
+  //     height: "120px",
+  //     width: "20px",
+  //   },
+  //   {
+  //     name: "submarine",
+  //     id: "3",
+  //     length: "3",
+  //     isPlaced: false,
+  //     height: `120px`,
+  //     width: "20px",
+  //   },
+  //   {
+  //     name: "destroyer",
+  //     id: "4",
+  //     length: "2",
+  //     isPlaced: false,
+  //     height: "80px",
+  //     width: "20px",
+  //   },
+  // ];
   const dispatch = useDispatch();
-  const [availableShips, setAvaliableShips] = useState(ships);
+  const waitingShips = useSelector((state) => state.users[player].waitingShips);
+  console.log(waitingShips);
+  const [availableShips, setAvaliableShips] = useState(waitingShips);
   const [selectedShipLength, setSelectedShipLength] = useState("");
 
   const handleShip = (e) => {
-    e.currentTarget.classList.add(`selected`);
+    // 1. Make a shallow copy of the array
+    let tempArray = [...availableShips];
+
+    // 2. Make a shallow copy of the element you want to mutate
+    let tempElement = { ...tempArray[e.target.id] };
+
+    // 3. Update the property you're interested in
+    tempElement.isPlaced = !tempElement.isPlaced;
+
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    tempArray[e.target.id] = tempElement;
+
+    // 5. Set the state to our new copy
+    setAvaliableShips(tempArray);
+
     setIsShipSelected(true);
     setSelectedShipLength(e.target.dataset.length);
   };
+
+  useEffect(() => {
+    dispatch(setWaitingShips({ player, availableShips }));
+  }, [player, availableShips, dispatch]);
 
   useEffect(() => {
     console.log(availableShips);
@@ -180,16 +206,17 @@ const PlacingComponent = ({ player }) => {
             shipDirection === `X` && `grid grid-rows-5 gap-1`
           } flex flex-row items-center h-60 gap-2  bg-blue-300 border-[1px] rounded-sm justify-evenly w-96`}
         >
-          {availableShips?.map((ship, i) => (
+          {waitingShips?.map((ship) => (
             <div
               onClick={(e) => handleShip(e)}
               onDrag={(e) => handleShip(e)}
-              key={i}
+              key={ship.id}
+              id={ship.id}
               data-length={ship.length}
               name={ship.length}
               style={{ height: `${ship.height}` }}
-              className={`${
-                shipDirection === `X` && `rotate-90`
+              className={`${shipDirection === `X` && `rotate-90`} ${
+                ship.isPlaced && `hidden`
               }  ship cursor-pointer w-10  border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
             ></div>
           ))}
@@ -201,18 +228,18 @@ const PlacingComponent = ({ player }) => {
           >
             rotate
           </button>
-          {/* <button
+          <button
             onClick={resetShips}
             className="items-center justify-center p-2 px-3 py-2 overflow-hidden text-sm transition duration-300 ease-out border-2 border-white rounded-full shadow-md hover:bg-slate-600 font-sm text-slate-100 bg-slate-700"
           >
             reset
-          </button> */}
+          </button>
         </div>
       </div>
 
       {/* Creating grid cells with XY coordinates  */}
       <div className="relative grid grid-cols-10 text-sm ">
-        <div className="absolute right-0 grid grid-cols-10 text-center -top-6 ">
+        <div className="absolute left-0 right-0 grid grid-cols-10 text-center -top-6 ">
           {coordsY.map((item) => (
             <div key={item} className="w-10">
               {item}

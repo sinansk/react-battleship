@@ -6,6 +6,48 @@ export const gameSlice = createSlice({
     playerOne: {
       isReady: null,
       name: "",
+      waitingShips: [
+        {
+          name: "carrier",
+          id: "0",
+          length: "5",
+          isPlaced: false,
+          height: "200px",
+          width: "20px",
+        },
+        {
+          name: "battleship",
+          id: "1",
+          length: "4",
+          isPlaced: false,
+          height: "160px",
+          width: "20px",
+        },
+        {
+          name: "cruiser",
+          id: "2",
+          length: "3",
+          isPlaced: false,
+          height: "120px",
+          width: "20px",
+        },
+        {
+          name: "submarine",
+          id: "3",
+          length: "3",
+          isPlaced: false,
+          height: `120px`,
+          width: "20px",
+        },
+        {
+          name: "destroyer",
+          id: "4",
+          length: "2",
+          isPlaced: false,
+          height: "80px",
+          width: "20px",
+        },
+      ],
       placedShipsCoords: [],
       sunkedShipsCoords: [],
       fires: {
@@ -18,6 +60,48 @@ export const gameSlice = createSlice({
     playerTwo: {
       isReady: null,
       name: "",
+      waitingShips: [
+        {
+          name: "carrier",
+          id: "0",
+          length: "5",
+          isPlaced: false,
+          height: "200px",
+          width: "20px",
+        },
+        {
+          name: "battleship",
+          id: "1",
+          length: "4",
+          isPlaced: false,
+          height: "160px",
+          width: "20px",
+        },
+        {
+          name: "cruiser",
+          id: "2",
+          length: "3",
+          isPlaced: false,
+          height: "120px",
+          width: "20px",
+        },
+        {
+          name: "submarine",
+          id: "3",
+          length: "3",
+          isPlaced: false,
+          height: `120px`,
+          width: "20px",
+        },
+        {
+          name: "destroyer",
+          id: "4",
+          length: "2",
+          isPlaced: false,
+          height: "80px",
+          width: "20px",
+        },
+      ],
       placedShipsCoords: [],
       sunkedShipsCoords: [],
       fires: {
@@ -29,6 +113,48 @@ export const gameSlice = createSlice({
     },
     activePlayer: "playerOne",
     activePlayerName: "",
+    waitingShips: [
+      {
+        name: "carrier",
+        id: "0",
+        length: "5",
+        isPlaced: false,
+        height: "200px",
+        width: "20px",
+      },
+      {
+        name: "battleship",
+        id: "1",
+        length: "4",
+        isPlaced: false,
+        height: "160px",
+        width: "20px",
+      },
+      {
+        name: "cruiser",
+        id: "2",
+        length: "3",
+        isPlaced: false,
+        height: "120px",
+        width: "20px",
+      },
+      {
+        name: "submarine",
+        id: "3",
+        length: "3",
+        isPlaced: false,
+        height: `120px`,
+        width: "20px",
+      },
+      {
+        name: "destroyer",
+        id: "4",
+        length: "2",
+        isPlaced: false,
+        height: "80px",
+        width: "20px",
+      },
+    ],
     winner: "",
     gameStarted: false,
     gameStep: 0,
@@ -54,6 +180,11 @@ export const gameSlice = createSlice({
         state.gameStep -= 1;
       }
     },
+    setWaitingShips: (state, action) => {
+      let player = action.payload.player;
+      console.log(player);
+      state[player].waitingShips = action.payload.availableShips;
+    },
 
     placeShip: (state, action) => {
       let player = action.payload.player;
@@ -71,6 +202,7 @@ export const gameSlice = createSlice({
     resetShipPosition: (state, action) => {
       let player = action.payload;
       state[player].placedShipsCoords = [];
+      state[player].waitingShips = state.waitingShips;
     },
 
     playerOneFires: (state, action) => {
@@ -149,6 +281,7 @@ export const {
   playerTwoFires,
   setActivePlayer,
   setActivePlayerName,
+  setWaitingShips,
   placeShip,
   resetShipPosition,
   checkWinner,
