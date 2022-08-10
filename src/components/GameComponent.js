@@ -1,32 +1,50 @@
 import { useEffect } from "react";
+import { coordsX, coordsY } from "../coords";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  playerOneFires,
-  playerTwoFires,
-  checkWinner,
-} from "../redux/gameRedux";
+import { playerOneFires, playerTwoFires, setWinner } from "../redux/gameRedux";
+import { useNavigate } from "react-router-dom";
 
 const GameComponent = ({ player, opponent }) => {
-  const coordsX = ["A0", "B1", "C2", "D3", "E4", "F5", "G6", "H7", "I8", "J9"];
-  const coordsY = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-  const dispatch = useDispatch();
-
   const activePlayer = useSelector((state) => state.users[player]);
   const activePlayerFires = activePlayer.fires;
-  console.log(activePlayerFires);
+  const successFires = activePlayerFires.successFires;
+
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  console.log("successFires:", successFires);
+  const opponentShips = useSelector((state) =>
+    state.users[opponent].placedShipsCoords.flat()
+  );
+  console.log("opponentShips:", opponentShips);
+  const winner = useSelector((state) => state.users.winner);
+  console.log(winner);
+
   const handleFire = (e) => {
     let area = e.target.dataset.coord;
     console.log(area);
     if (player === "playerOne") {
-      dispatch(playerOneFires(area));
+      dispatch(playerOneFires({ area, player, opponent }));
     } else if (player === "playerTwo") {
-      dispatch(playerTwoFires(area));
+      dispatch(playerTwoFires({ area, player, opponent }));
     }
-    dispatch(checkWinner({ player, opponent }));
   };
-  console.log(player);
 
-  const winner = useSelector((state) => state.users.winner);
+  function handleWinner(successFires, opponentShips) {
+    if (successFires.length === opponentShips.length) {
+      return successFires.every((element) => {
+        if (opponentShips.includes(element)) {
+          dispatch(setWinner(player));
+          return true;
+        }
+        return false;
+      });
+    }
+
+    return false;
+  }
+
+  console.log(handleWinner(successFires, opponentShips)); // 👉️ true
 
   useEffect(() => {
     console.log("winner", winner);
@@ -37,7 +55,7 @@ const GameComponent = ({ player, opponent }) => {
       {/* Creating grid cells with XY coordinates  */}
       <div
         className={`${
-          player === `playerTwo` ? `bg-teal-300` : `bg-blue-300`
+          player === `playerTwo` ? `bg-lime-300` : `bg-sky-300`
         } relative grid grid-cols-10 text-sm `}
       >
         <div className="absolute right-0 grid grid-cols-10 text-center -top-6 ">

@@ -10,7 +10,7 @@ const NameComponent = () => {
     <>
       <h2 className="mb-4 text-2xl font-bold ">PLEASE ENTER YOUR NAMES!</h2>
 
-      <div className="flex flex-col items-center justify-center text-2xl bg-blue-300 border-2 rounded-md w-96 h-96">
+      <div className="flex flex-col items-center justify-center text-2xl bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 w-96 h-96">
         <div className="flex flex-col m-10">
           <label htmlFor="player1">Player 1</label>
           <input

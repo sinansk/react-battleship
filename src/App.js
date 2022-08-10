@@ -15,33 +15,40 @@ import { useSelector } from "react-redux";
 
 const App = () => {
   const activePlayer = useSelector((state) => state.users.activePlayer);
+  const isGameEnd = useSelector((state) => state.users.isGameEnd);
+  const isGameStarted = useSelector((state) => state.users.isGameStarted);
   return (
     <div className="bg-center bg-no-repeat bg-cover bg-sea-bg-image">
       <Router>
         <Routes>
           <Route path="/" element={<WelcomePage />} />
+
           <Route path="/player-1" element={<PlacingPagePlayerOne />} />
           <Route path="/player-2" element={<PlacingPagePlayerTwo />} />
-          <Route
-            path="/game-1"
-            element={
-              activePlayer === "playerTwo" ? (
-                <Navigate to="/game-2" />
-              ) : (
-                <GamePagePlayerOne />
-              )
-            }
-          />
-          <Route
-            path="/game-2"
-            element={
-              activePlayer === "playerOne" ? (
-                <Navigate to="/game-1" />
-              ) : (
-                <GamePagePlayerTwo />
-              )
-            }
-          />
+          {isGameStarted && (
+            <>
+              <Route
+                path="/game-1"
+                element={
+                  activePlayer === "playerTwo" ? (
+                    <Navigate to="/game-2" />
+                  ) : (
+                    <GamePagePlayerOne />
+                  )
+                }
+              />
+              <Route
+                path="/game-2"
+                element={
+                  activePlayer === "playerOne" ? (
+                    <Navigate to="/game-1" />
+                  ) : (
+                    <GamePagePlayerTwo />
+                  )
+                }
+              />
+            </>
+          )}
           <Route path="/end" element={<EndPage />} />
         </Routes>
       </Router>

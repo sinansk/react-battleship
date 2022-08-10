@@ -3,8 +3,50 @@ import { createSlice } from "@reduxjs/toolkit";
 export const gameSlice = createSlice({
   name: "users",
   initialState: {
+    waitingShips: [
+      {
+        name: "carrier",
+        id: "0",
+        length: "5",
+        isPlaced: false,
+        height: "200px",
+        width: "20px",
+      },
+      {
+        name: "battleship",
+        id: "1",
+        length: "4",
+        isPlaced: false,
+        height: "160px",
+        width: "20px",
+      },
+      {
+        name: "cruiser",
+        id: "2",
+        length: "3",
+        isPlaced: false,
+        height: "120px",
+        width: "20px",
+      },
+      {
+        name: "submarine",
+        id: "3",
+        length: "3",
+        isPlaced: false,
+        height: `120px`,
+        width: "20px",
+      },
+      {
+        name: "destroyer",
+        id: "4",
+        length: "2",
+        isPlaced: false,
+        height: "80px",
+        width: "20px",
+      },
+    ],
     playerOne: {
-      isReady: null,
+      isReady: false,
       name: "",
       waitingShips: [
         {
@@ -58,7 +100,7 @@ export const gameSlice = createSlice({
       },
     },
     playerTwo: {
-      isReady: null,
+      isReady: false,
       name: "",
       waitingShips: [
         {
@@ -113,50 +155,10 @@ export const gameSlice = createSlice({
     },
     activePlayer: "playerOne",
     activePlayerName: "",
-    waitingShips: [
-      {
-        name: "carrier",
-        id: "0",
-        length: "5",
-        isPlaced: false,
-        height: "200px",
-        width: "20px",
-      },
-      {
-        name: "battleship",
-        id: "1",
-        length: "4",
-        isPlaced: false,
-        height: "160px",
-        width: "20px",
-      },
-      {
-        name: "cruiser",
-        id: "2",
-        length: "3",
-        isPlaced: false,
-        height: "120px",
-        width: "20px",
-      },
-      {
-        name: "submarine",
-        id: "3",
-        length: "3",
-        isPlaced: false,
-        height: `120px`,
-        width: "20px",
-      },
-      {
-        name: "destroyer",
-        id: "4",
-        length: "2",
-        isPlaced: false,
-        height: "80px",
-        width: "20px",
-      },
-    ],
+
     winner: "",
-    gameStarted: false,
+    isGameStarted: false,
+    isGameEnd: false,
     gameStep: 0,
   },
 
@@ -167,11 +169,7 @@ export const gameSlice = createSlice({
     setPlayerTwoName: (state, action) => {
       state.playerTwo.name = action.payload;
     },
-    setGameStarted: (state) => {
-      if (state.playerOne.name !== "" && state.playerTwo.name !== "") {
-        state.gameStarted = true;
-      }
-    },
+    setGameStarted: (state) => {},
     increaseGameStep: (state) => {
       state.gameStep += 1;
     },
@@ -183,43 +181,60 @@ export const gameSlice = createSlice({
     setWaitingShips: (state, action) => {
       let player = action.payload.player;
       console.log(player);
-      state[player].waitingShips = action.payload.availableShips;
     },
 
     placeShip: (state, action) => {
+      let selectedShipId = action.payload.selectedShipId;
       let player = action.payload.player;
-
       const flatten = state[player].placedShipsCoords?.flat();
-
-      const isPlaced = flatten.some((item) =>
-        action.payload.shipCoord.includes(item)
+      if (state[player].placedShipsCoords.length === 4) {
+        state[player].isReady = true;
+      }
+      if (state.playerOne.isReady && state.playerTwo.isReady) {
+        state.isGameStarted = true;
+      }
+      const isPlaced = action.payload.shipCoord.some((item) =>
+        flatten.includes(item)
       );
-
       if (isPlaced === false) {
         state[player]?.placedShipsCoords?.push(action.payload.shipCoord);
+        state[player].waitingShips[selectedShipId].isPlaced = true;
       } else return;
     },
     resetShipPosition: (state, action) => {
       let player = action.payload;
       state[player].placedShipsCoords = [];
       state[player].waitingShips = state.waitingShips;
+      state[player].isReady = false;
+      state.isGameStarted = false;
     },
 
     playerOneFires: (state, action) => {
+      let player = action.payload.player;
+      let opponent = action.payload.opponent;
+      let successFires = state.playerOne.fires?.successFires;
       const itemIndex = state.playerOne.fires?.allFires?.findIndex(
-        (fire) => fire === action.payload
+        (fire) => fire === action.payload.area
+      );
+      state.activePlayer = "playerOne";
+      console.log("player", player, "opponent", opponent);
+      console.log("successFires:", successFires);
+      console.log(
+        "placedShipsCoords:",
+        state[opponent].placedShipsCoords.flat()
       );
       console.log(itemIndex);
       if (itemIndex === -1) {
-        state.playerOne.fires?.allFires.push(action.payload);
+        state.playerOne.fires?.allFires.push(action.payload.area);
         if (
-          state.playerTwo.placedShipsCoords?.flat().includes(action.payload)
+          state.playerTwo.placedShipsCoords
+            ?.flat()
+            .includes(action.payload.area)
         ) {
-          state.playerOne.fires?.successFires.push(action.payload);
+          state.playerOne.fires?.successFires.push(action.payload.area);
           state.activePlayerName = state.playerOne.name;
-          state.activePlayer = "playerOne";
         } else {
-          state.playerOne.fires?.missedFires.push(action.payload);
+          state.playerOne.fires?.missedFires.push(action.payload.area);
           state.activePlayerName = state.playerTwo.name;
           state.activePlayer = "playerTwo";
         }
@@ -227,19 +242,32 @@ export const gameSlice = createSlice({
     },
 
     playerTwoFires: (state, action) => {
+      let player = action.payload.player;
+      let opponent = action.payload.opponent;
+      let successFires = state.playerTwo.fires?.successFires;
+
+      state.activePlayer = "playerOne";
+      console.log("player", player, "opponent", opponent);
+      console.log("successFires:", successFires);
+      console.log(
+        "placedShipsCoords:",
+        state[opponent].placedShipsCoords.flat()
+      );
       const itemIndex = state.playerTwo?.fires?.allFires?.findIndex(
-        (fire) => fire === action.payload
+        (fire) => fire === action.payload.area
       );
       console.log(itemIndex);
       if (itemIndex === -1) {
-        state.playerTwo.fires?.allFires.push(action.payload);
+        state.playerTwo.fires?.allFires.push(action.payload.area);
         if (
-          state.playerOne.placedShipsCoords?.flat().includes(action.payload)
+          state.playerOne.placedShipsCoords
+            ?.flat()
+            .includes(action.payload.area)
         ) {
-          state.playerTwo.fires?.successFires.push(action.payload);
+          state.playerTwo.fires?.successFires.push(action.payload.area);
           state.activePlayer = "playerTwo";
         } else {
-          state.playerTwo.fires?.missedFires.push(action.payload);
+          state.playerTwo.fires?.missedFires.push(action.payload.area);
           state.activePlayer = "playerOne";
         }
       } else return;
@@ -254,18 +282,12 @@ export const gameSlice = createSlice({
         state.activePlayerName = state.playerTwo.name;
       }
     },
-    checkWinner: (state, action) => {
-      let player = action.payload.player;
-      let opponent = action.payload.opponent;
+    setWinner: (state, action) => {
+      state.winner = action.payload;
 
-      console.log("player", player, "opponent", opponent);
-      if (
-        state[player].fires.successFires.includes(
-          state[opponent].placedShipsCoords.flat()
-        )
-      ) {
-      }
+      state.isGameEnd = true;
     },
+    reset: (state) => {},
   },
 });
 
@@ -284,7 +306,8 @@ export const {
   setWaitingShips,
   placeShip,
   resetShipPosition,
-  checkWinner,
+  setWinner,
+  reset,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -2,7 +2,6 @@ import PlacingComponent from "../components/PlacingComponent";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux/";
 import StepButton from "../components/StepButton";
-import AvailableShipsComponent from "../components/AvailableShipsComponent";
 
 const PlacingPagePlayerOne = () => {
   const playerOneName = useSelector((state) => state.users.playerOne.name);
