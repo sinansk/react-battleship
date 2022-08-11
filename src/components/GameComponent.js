@@ -37,10 +37,6 @@ const GameComponent = ({ player, opponent }) => {
 
   console.log(handleWinner(successFires, opponentShips)); // 👉️ true
 
-  useEffect(() => {
-    console.log("winner", winner);
-  }, []);
-
   return (
     <>
       {/* Creating grid cells with XY coordinates  */}

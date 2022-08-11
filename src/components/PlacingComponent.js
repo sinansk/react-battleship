@@ -21,12 +21,8 @@ const PlacingComponent = ({ player }) => {
     setSelectedShipLength(e.target.dataset.length);
   };
 
-  const handleShipDirection = (e) => {
-    if (shipDirection === "X") {
-      setShipDirection("Y");
-    } else {
-      setShipDirection("X");
-    }
+  const handleShipDirection = () => {
+    shipDirection === "X" ? setShipDirection("Y") : setShipDirection("X");
   };
 
   let shipStartPoint;
@@ -39,7 +35,6 @@ const PlacingComponent = ({ player }) => {
       let pointOne = Number(shipStartPoint[0]);
       if (shipDirection === "X") {
         for (let i = 0; i < selectedShipLength; i++) {
-          console.log("pointTwo", pointTwo);
           let point = shipStartPoint[0] + pointTwo;
           shipPoints.push(point);
           pointTwo += 1;
@@ -47,7 +42,6 @@ const PlacingComponent = ({ player }) => {
       } else if (shipDirection === "Y") {
         //if ship direction is Y axis //
         for (let i = 0; i < selectedShipLength; i++) {
-          console.log("pointTwo", pointTwo);
           let point = pointOne + shipStartPoint[1];
           shipPoints.push(point);
           pointOne += 1;
