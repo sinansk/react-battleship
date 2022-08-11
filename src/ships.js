@@ -1,0 +1,42 @@
+export const ships = [
+  {
+    name: "carrier",
+    id: "0",
+    length: "5",
+    isPlaced: false,
+    height: "200px",
+    width: "20px",
+  },
+  {
+    name: "battleship",
+    id: "1",
+    length: "4",
+    isPlaced: false,
+    height: "160px",
+    width: "20px",
+  },
+  {
+    name: "cruiser",
+    id: "2",
+    length: "3",
+    isPlaced: false,
+    height: "120px",
+    width: "20px",
+  },
+  {
+    name: "submarine",
+    id: "3",
+    length: "3",
+    isPlaced: false,
+    height: `120px`,
+    width: "20px",
+  },
+  {
+    name: "destroyer",
+    id: "4",
+    length: "2",
+    isPlaced: false,
+    height: "80px",
+    width: "20px",
+  },
+];

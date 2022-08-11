@@ -2,14 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { coordsX, coordsY } from "../coords";
 import { placeShip, resetShipPosition } from "../redux/gameRedux";
-import { useNavigate } from "react-router-dom";
 
 const PlacingComponent = ({ player }) => {
-  const isGameStarted = useSelector((state) => state.users.isGameStarted);
   const activePlayer = useSelector((state) => state.users[player]);
-  const isPlayerReady = activePlayer.isReady;
-  const activePlayerShips = activePlayer?.placedShipsCoords;
-  const flatten = activePlayerShips?.flat();
+  const activePlayerShips = activePlayer?.placedShipsCoords.flat();
   const waitingShips = useSelector((state) => state.users[player].waitingShips);
   const [isShipSelected, setIsShipSelected] = useState(false);
   const [selectedShipId, setSelectedShipId] = useState("");
@@ -18,7 +14,6 @@ const PlacingComponent = ({ player }) => {
   const [shipDirection, setShipDirection] = useState("X");
 
   const dispatch = useDispatch();
-  let navigate = useNavigate();
 
   const handleShip = (e) => {
     setIsShipSelected(true);
@@ -26,9 +21,17 @@ const PlacingComponent = ({ player }) => {
     setSelectedShipLength(e.target.dataset.length);
   };
 
+  const handleShipDirection = (e) => {
+    if (shipDirection === "X") {
+      setShipDirection("Y");
+    } else {
+      setShipDirection("X");
+    }
+  };
+
   let shipStartPoint;
   let shipPoints = [];
-  const handleDragOverPoint = (e) => {
+  const handleShipOverBoard = (e) => {
     if (isShipSelected) {
       shipStartPoint = e.target.dataset.coord;
       // if ship direction is X axis///
@@ -54,44 +57,26 @@ const PlacingComponent = ({ player }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("shipCoord", shipCoord);
-  }, [shipCoord]);
-
-  const handlePlaceShips = () => {
-    if (
-      ///CHECK IF ANY SHIP COORD OUT OF THE BOARD, TO SEND COORD TO REDUX////
+  const handlePlacedShips = () => {
+    ///CHECK IF ANY SHIP COORD OUT OF THE BOARD, TO SEND COORD TO REDUX////
+    isShipSelected &&
       shipCoord.every((element) => element <= 99) &&
       shipCoord.every((element) => element !== `010`) &&
-      isShipSelected
-    ) {
       dispatch(placeShip({ player, shipCoord, selectedShipId }));
-      setIsShipSelected(false);
-    }
+    setIsShipSelected(false);
   };
-
-  const handleShipDirection = (e) => {
-    if (shipDirection === "X") {
-      setShipDirection("Y");
-    } else {
-      setShipDirection("X");
-    }
-  };
-
-  useEffect(() => {
-    console.log(shipDirection);
-  }, [shipDirection]);
+  ///IF USER WANT TO CHANGE SHIP POSITIONS BEFORE GAME STARTED ///
   const resetShips = () => {
     dispatch(resetShipPosition(player));
   };
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="flex flex-col items-center mr-10">
+    <div className="grid sm:grid-cols-2">
+      <div className="flex flex-col items-center scale-75 sm:scale-100 sm:mr-10">
         <div
           className={`${
             shipDirection === `X` && `grid grid-rows-5 gap-1`
-          }  flex flex-row items-center h-60 gap-2  bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 justify-evenly w-96`}
+          }   flex flex-row items-center h-60 2xl:w-[36rem] 2xl:h-[21rem] gap-2  bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 justify-evenly w-96`}
         >
           {waitingShips?.map((ship) => (
             <div
@@ -104,7 +89,7 @@ const PlacingComponent = ({ player }) => {
               style={{ height: `${ship.height}` }}
               className={`${shipDirection === `X` && `rotate-90`} ${
                 ship.isPlaced && `hidden`
-              }  ship cursor-pointer w-10  border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
+              }  ship cursor-pointer w-10 2xl:scale-125 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
             ></div>
           ))}
         </div>
@@ -125,59 +110,50 @@ const PlacingComponent = ({ player }) => {
       </div>
 
       {/* Creating grid cells with XY coordinates  */}
-      <div className="relative grid grid-cols-10 text-sm ">
+      <div className="relative grid grid-cols-10 text-sm scale-90 xs:scale-95 sm:scale-100">
         <div className="absolute left-0 right-0 grid grid-cols-10 text-center -top-6 ">
           {coordsY.map((item) => (
-            <div key={item} className="w-10">
+            <div key={item} className="w-10 2xl:w-14">
               {item}
             </div>
           ))}
         </div>
         <div className="absolute top-0 grid items-center text-right -left-4 grid-rows-10">
           {coordsX.map((item) => (
-            <div key={item[0]} className="grid items-center h-10">
+            <div key={item[0]} className="grid items-center h-10 2xl:h-14">
               {item[0]}
             </div>
           ))}
         </div>
         {coordsY.map((coordY) => (
-          <div coord={coordY} key={coordY} className="grid grid-rows-10">
+          <div
+            coord={coordY}
+            key={coordY}
+            className="grid scale-90 xs:scale-95 sm:scale-100 grid-rows-10"
+          >
             {coordsX.map((coordX) => (
               <div
                 className={`${
-                  flatten?.includes(coordX[1] + coordY)
+                  activePlayerShips?.includes(coordX[1] + coordY)
                     ? `bg-slate-700`
                     : `${player === `playerTwo` ? `bg-lime-300` : `bg-sky-300`}`
                 } 
-                     border-[0.5px]  w-10 h-10`}
+                     border-[0.5px]  w-10 h-10 2xl:w-14 2xl:h-14`}
                 key={coordX[1] + coordY}
                 data-coord={coordX[1] + coordY}
-                // onClick={(e) => handleFilledAreas(e)}
-                draggable
-                onMouseOver={handleDragOverPoint}
+                onMouseOver={handleShipOverBoard}
               >
                 {isShipSelected && shipCoord?.includes(coordX[1] + coordY) && (
                   <div
-                    onClick={handlePlaceShips}
+                    onClick={handlePlacedShips}
                     data-coord={coordX[1] + coordY}
                     className={`${
-                      shipCoord.some((item) => flatten.includes(item))
+                      shipCoord.some((item) => activePlayerShips.includes(item))
                         ? `bg-red-500`
                         : ` bg-green-500`
-                    }  w-10 h-10 border-[0.5px] text-center text-lg cursor-pointer`}
+                    }  w-10 h-10 2xl:w-14 2xl:h-14 border-[0.5px] text-center text-lg cursor-pointer`}
                   ></div>
                 )}
-                {/* {flatten?.includes(coordX[1] + coordY) && (
-                  <div
-                    draggable
-                    data-coord={coordX[1] + coordY}
-                    className={`${
-                      isShipSelected && `bg-red-400 `
-                    } border-[0.5px] text-center text-lg bg-slate-800 w-10 h-10`}
-                  >
-                    {`${isShipSelected ? `X` : ``}`}
-                  </div>
-                )} */}
               </div>
             ))}
           </div>

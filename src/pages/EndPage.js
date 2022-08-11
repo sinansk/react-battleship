@@ -11,28 +11,26 @@ const EndPage = () => {
   const playerTwo = useSelector((state) => state.users.playerTwo);
   const playerTwoName = playerTwo.name;
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
-      <div className="w-full md:w-1/2 h-3/4 flex flex-col text-center items-evenly justify-evenly bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100">
+    <div className="flex items-center justify-center w-screen h-screen">
+      <div className="flex flex-col items-center w-full text-center bg-gray-400 border border-gray-100 rounded-md justify-evenly lg:w-1/2 h-3/4 md:w-full bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
         <h2 className="text-4xl font-extrabold animate-pulse">
-          {winnerName} IS WON!
+          {winnerName} WON!
         </h2>
-        <div className=" text-2xl">
-          <ol>
-            <li>
-              <h3 className="underline font-semibold">{playerOneName}</h3>
-              <h3>Succesfull Fires: {playerOne.fires.successFires.length}</h3>
-              <h3>Missed Fires: {playerOne.fires.missedFires.length}</h3>
-            </li>
-            <hr></hr>
-            <li>
-              <h3 className="underline font-semibold">{playerTwoName}</h3>
-              <h3>Succesfull Fires: {playerTwo.fires.successFires.length}</h3>
-              <h3>Missed Fires: {playerTwo.fires.missedFires.length}</h3>
-            </li>
-          </ol>
+        <div className="flex flex-col w-full text-2xl divide-y divide-solid ">
+          <div>
+            <h3 className="font-semibold underline ">{playerOneName}</h3>
+            <h3>Succesfull Fires: {playerOne.fires.successFires.length}</h3>
+            <h3>Missed Fires: {playerOne.fires.missedFires.length}</h3>
+          </div>
+
+          <div>
+            <h3 className="my-auto font-semibold underline">{playerTwoName}</h3>
+            <h3>Succesfull Fires: {playerTwo.fires.successFires.length}</h3>
+            <h3>Missed Fires: {playerTwo.fires.missedFires.length}</h3>
+          </div>
         </div>
         <Link to="/">
-          <StepButton name="new game" />
+          <StepButton buttonName="new game" />
         </Link>
       </div>
     </div>

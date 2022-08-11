@@ -4,21 +4,25 @@ import { useSelector } from "react-redux/";
 import StepButton from "../components/StepButton";
 
 const PlacingPagePlayerTwo = () => {
-  const playerTwoName = useSelector((state) => state.users.playerTwo.name);
+  const playerTwo = useSelector((state) => state.users.playerTwo);
+  const playerTwoName = playerTwo.name;
+  const isPlayerTwoReady = playerTwo.isReady;
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
-      <h2 className="mb-10 text-3xl font-bold animate-pulse">
+    <div className="flex flex-col items-center justify-center w-screen h-full sm:h-screen">
+      <h2 className="mb-3 text-2xl font-bold sm:mb-10 sm:text-3xl animate-pulse">
         {playerTwoName}, PLACE YOUR SHIPS
       </h2>
       <PlacingComponent playerName={playerTwoName} player="playerTwo" />
       <div className="flex gap-2">
         <NavLink to="/player-1">
-          <StepButton name="back" />
+          <StepButton buttonName="back" />
         </NavLink>
-        <NavLink to="/game-1">
-          <StepButton name="next" />
-        </NavLink>
+        {isPlayerTwoReady && (
+          <NavLink to="/game-1">
+            <StepButton buttonName="play" />
+          </NavLink>
+        )}
       </div>
     </div>
   );

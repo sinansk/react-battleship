@@ -1,13 +1,17 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import GameComponent from "../components/GameComponent";
+import { setGameStarted } from "../redux/gameRedux";
+import { useDispatch } from "react-redux/";
 
 const GamePagePlayerOne = () => {
   const activePlayer = useSelector((state) => state.users.activePlayer);
-  console.log(activePlayer);
   const activePlayerName = useSelector(
     (state) => state.users[activePlayer]?.name
   );
+  const isGameStarted = useSelector((state) => state.users.isGameStarted);
+  const dispatch = useDispatch();
+
+  !isGameStarted && dispatch(setGameStarted());
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen transition ease-in-out delay-1500">

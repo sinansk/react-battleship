@@ -4,13 +4,8 @@ module.exports = {
   theme: {
     backgroundImage: {
       "sea-bg-image": "url('../src/assets/sea-bg.jpg')",
+      // vecteezy.com image-source
     },
-    // colors: {
-    //   "playerOne-bg": "#67e8f9",
-    //   "playerOne-hover": "#bef264",
-    //   "playerTwo-bg": "#5eead4",
-    //   "playerTwo-hover": "#67e8f9",
-    // },
     extend: {},
   },
   plugins: [],
