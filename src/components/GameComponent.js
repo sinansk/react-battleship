@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { coordsX, coordsY } from "../coords";
 import { useDispatch, useSelector } from "react-redux";
 import { playerOneFires, playerTwoFires, setWinner } from "../redux/gameRedux";
@@ -10,7 +9,7 @@ const GameComponent = ({ player, opponent }) => {
   const opponentShips = useSelector((state) =>
     state.users[opponent].placedShipsCoords.flat()
   );
-  const winner = useSelector((state) => state.users.winner);
+
   const dispatch = useDispatch();
 
   ///I TRIED REFACTORING TO DISPATCH FUNCTIONS FOR FIRES, BUT IT DID NOT WORKED SOMEHOW//
@@ -18,6 +17,7 @@ const GameComponent = ({ player, opponent }) => {
     let area = e.target.dataset.coord;
     player === "playerOne" &&
       dispatch(playerOneFires({ area, player, opponent }));
+
     player === "playerTwo" &&
       dispatch(playerTwoFires({ area, player, opponent }));
   };
@@ -34,8 +34,7 @@ const GameComponent = ({ player, opponent }) => {
     }
     return false;
   };
-
-  console.log(handleWinner(successFires, opponentShips)); // 👉️ true
+  handleWinner(successFires, opponentShips);
 
   return (
     <>

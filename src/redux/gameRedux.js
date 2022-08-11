@@ -76,7 +76,7 @@ export const gameSlice = createSlice({
         (fire) => fire === action.payload.area
       );
       state.activePlayer = "playerOne";
-      console.log(itemIndex);
+
       if (itemIndex === -1) {
         state.playerOne.fires?.allFires.push(action.payload.area);
         if (
@@ -85,10 +85,9 @@ export const gameSlice = createSlice({
             .includes(action.payload.area)
         ) {
           state.playerOne.fires?.successFires.push(action.payload.area);
-          state.activePlayerName = state.playerOne.name;
+          state.activePlayer = "playerOne";
         } else {
           state.playerOne.fires?.missedFires.push(action.payload.area);
-          state.activePlayerName = state.playerTwo.name;
           state.activePlayer = "playerTwo";
         }
       } else return;
@@ -99,7 +98,7 @@ export const gameSlice = createSlice({
         (fire) => fire === action.payload.area
       );
       state.activePlayer = "playerOne";
-      console.log(itemIndex);
+
       if (itemIndex === -1) {
         state.playerTwo.fires?.allFires.push(action.payload.area);
         if (
