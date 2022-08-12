@@ -17,8 +17,8 @@ const PlacingComponent = ({ player }) => {
 
   const handleShip = (e) => {
     setIsShipSelected(true);
-    setSelectedShipId(e.target.id);
-    setSelectedShipLength(e.target.dataset.length);
+    setSelectedShipId(e.target.id); //FOR SEND TO REDUX AND HIDING ELEMENT FROM DOM//
+    setSelectedShipLength(e.target.dataset.length); ///FOR CREATING SHIP ON BOARD ON UI//
   };
 
   const handleShipDirection = () => {
@@ -83,7 +83,9 @@ const PlacingComponent = ({ player }) => {
               style={{ height: `${ship.height}` }} ///TAILWIND DOESN'T SUPPORT MAPPING STYLE CLASS//
               className={`${shipDirection === `X` && `rotate-90`} ${
                 ship.isPlaced && `hidden`
-              }  ship cursor-pointer w-10 2xl:scale-125 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
+              } ${
+                selectedShipId === ship.id ? `outline bg-slate-600` : ``
+              } ship cursor-pointer w-10 2xl:scale-125 border rounded-sm bg-slate-700 hover:scale-105 hover:bg-slate-600 hover:outline outline-sky-500`}
             ></div>
           ))}
         </div>
