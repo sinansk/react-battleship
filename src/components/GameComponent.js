@@ -12,7 +12,7 @@ const GameComponent = ({ player, opponent }) => {
 
   const dispatch = useDispatch();
 
-  ///I TRIED REFACTORING TO DISPATCH FUNCTIONS FOR FIRES, BUT IT DID NOT WORKED SOMEHOW//
+  ///I TRIED REFACTORING DISPATCH FUNCTIONS FOR FIRES, BUT IT DID NOT WORKED SOMEHOW//
   const handleFire = (e) => {
     let area = e.target.dataset.coord;
     player === "playerOne" &&
@@ -39,11 +39,7 @@ const GameComponent = ({ player, opponent }) => {
   return (
     <>
       {/* Creating grid cells with XY coordinates  */}
-      <div
-        className={`${
-          player === `playerTwo` ? `bg-lime-300` : `bg-sky-300`
-        } relative grid grid-cols-10 text-sm scale-95 sm:scale-100 `}
-      >
+      <div className="relative grid grid-cols-10 text-sm scale-90 xs:scale-95 sm:scale-100">
         <div className="absolute right-0 grid grid-cols-10 text-center -top-6 ">
           {coordsY.map((item) => (
             <div key={item} className="w-10 2xl:w-14">
@@ -51,9 +47,9 @@ const GameComponent = ({ player, opponent }) => {
             </div>
           ))}
         </div>
-        <div className="absolute top-0 grid items-center text-right -left-4 grid-rows-10">
+        <div className="absolute top-0 grid items-center text-right scale-95 -left-4 grid-rows-10 sm:scale-100">
           {coordsX.map((item) => (
-            <div key={item[0]} className="grid items-center h-10 2xl:h-14">
+            <div key={item[0]} className="grid items-center h-10 2xl:h-14 ">
               {item[0]}
             </div>
           ))}
@@ -66,7 +62,9 @@ const GameComponent = ({ player, opponent }) => {
           >
             {coordsX.map((coordX) => (
               <div
-                className={`cursor-crosshair hover:bg-${player}-hover border-[0.5px] bg-${player}-bg 2xl:w-14 2xl:h-14 w-10 h-10`}
+                className={`${
+                  player === `playerTwo` ? `bg-lime-300` : `bg-sky-300`
+                } cursor-crosshair hover:bg-${player}-hover border-[0.5px] bg-${player}-bg 2xl:w-14 2xl:h-14 w-10 h-10`}
                 key={coordX[1] + coordY}
                 data-coord={coordX[1] + coordY}
                 onClick={(e) => handleFire(e)}

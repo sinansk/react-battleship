@@ -36,7 +36,6 @@ export const gameSlice = createSlice({
     winner: "",
     isGameStarted: false,
     isGameEnd: false,
-    gameStep: 0,
   },
 
   reducers: {

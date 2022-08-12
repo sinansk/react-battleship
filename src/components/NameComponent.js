@@ -17,7 +17,7 @@ const NameComponent = () => {
 
   return (
     <>
-      <h2 className="mb-12 text-2xl font-bold sm:text-3xl 2xl:text-4xl">
+      <h2 className="mb-10 text-2xl font-bold sm:text-3xl 2xl:text-4xl">
         PLEASE ENTER YOUR NAMES!
       </h2>
       <div className="flex flex-col items-center justify-center text-2xl bg-gray-400 border border-gray-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 w-96 h-96 2xl:h-[574px] 2xl:w-[574px] 2xl:text-3xl">
@@ -46,7 +46,7 @@ const NameComponent = () => {
         className={`${
           (userNames.playerOneName === "" || userNames.playerTwoName === "") &&
           `invisible`
-        }`}
+        } mt-4`}
         onClick={(e) => dispatch(setPlayerNames(userNames))}
       >
         <NavLink to="/player-1">

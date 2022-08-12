@@ -18,7 +18,7 @@ const App = () => {
   const isGameStarted = useSelector((state) => state.users.isGameStarted);
 
   return (
-    <div className="bg-center bg-no-repeat bg-cover  overlow-hidden bg-sea-bg-image">
+    <div className="min-h-screen bg-center bg-no-repeat bg-cover min-w-screen overlow-hidden bg-sea-bg-image">
       <Router>
         <Routes>
           <Route path="/" element={<WelcomePage />} />

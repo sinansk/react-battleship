@@ -8,7 +8,7 @@ const GamePagePlayerTwo = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-full transition ease-in-out sm:h-screen delay-1500">
+    <div className="flex flex-col items-center justify-center w-screen h-screen transition ease-in-out delay-1500">
       <h2 className="mb-10 text-3xl font-bold animate-pulse">
         YOUR TURN, {activePlayerName}
       </h2>
