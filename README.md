@@ -22,3 +22,5 @@ It is a battleship board game with two player. You should place your ships one b
 
 
 [![React BattleShip Game](https://github.com/sinansk/react-battleship/blob/main/public/react-battleship.PNG)](https://battleship-boardgame.netlify.app/)
+[![React BattleShip Game](https://github.com/sinansk/react-battleship/blob/main/public/react-battleship-2.PNG)](https://battleship-boardgame.netlify.app/)
+[![React BattleShip Game](https://github.com/sinansk/react-battleship/blob/main/public/react-battleship-3.PNG)](https://battleship-boardgame.netlify.app/)
